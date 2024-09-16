@@ -1,0 +1,57 @@
+stages:
+  - build
+  - release
+
+build-nodejs-job:
+  stage: build
+  image: node:21-alpine
+  tags: 
+    - shared
+  script:
+    - cd nodejs
+    - echo "Compiling the code..."
+    - npm i
+    - npm run build
+    - echo "Compile completed."
+  rules:
+    - changes:
+      - nodejs/**/*
+  artifacts:
+    paths:
+    - "nodejs/dist/piwas.js"
+
+build-java-job:
+  stage: build
+  image: openjdk:17-alpine
+  tags: 
+    - shared
+  script:
+    - cd java
+    - apk add make
+    - echo "Compiling the code..."
+    - make
+    - echo "Compile completed."
+  rules:
+    - changes:
+      - java/**/*
+  artifacts:
+    paths:
+    - "java/dist/piwas.jar"
+
+build-client-job:
+  stage: build
+  image: golang:1.22-alpine
+  tags: 
+    - shared
+  script:
+    - cd client
+    - go mod tidy
+    - echo "Compiling the code..."
+    - go build
+    - echo "Compile completed."
+  rules:
+    - changes:
+      - client/**/*
+  artifacts:
+    paths:
+    - "client/piwas-client"

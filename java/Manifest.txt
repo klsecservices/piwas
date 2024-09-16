@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Agent-Class: Agent
+Premain-Class: Agent
+Main-Class: Loader
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
